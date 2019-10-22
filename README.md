@@ -1,6 +1,12 @@
 # metadata-please
 
-Browser extension to annotate pages and save them into a YAML file
+Browser extension to annotate pages and save them into a YAML file.
+
+Features
+- Autocompletion using page metadata parser
+- Geolocalisation with a World map
+- YAML output
+- Redirection to a pull request on Github to save the YAML file
 
 ## How to use
 
