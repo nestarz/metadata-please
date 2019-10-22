@@ -17,7 +17,7 @@
   ],
 
   "options_ui": {
-    "page": "src/options/options.html",
+    "page": "src/pages/options/options.html",
     "chrome_style": true
   },
 
@@ -28,7 +28,7 @@
   "browser_action": {
     "default_icon": "assets/icons/icon.png",
     "default_title": "Metadata, Please",
-    "default_popup": "src/popup/popup.html"
+    "default_popup": "src/pages/popup/popup.html"
   },
 
   "permissions": [

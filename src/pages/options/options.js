@@ -20,6 +20,6 @@ Object.entries(composition).forEach(([name, api]) => {
 });
 
 new Vue({
-  components: { options: httpVueLoader("/src/options/Options.vue") },
+  components: { options: httpVueLoader("/src/pages/options/Options.vue") },
   template: "<options></options>"
 }).$mount("#app");

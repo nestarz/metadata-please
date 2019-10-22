@@ -21,6 +21,6 @@ Object.entries(composition).forEach(([name, api]) => {
 });
 
 new Vue({
-  components: { popup: httpVueLoader("/src/popup/Popup.vue") },
+  components: { popup: httpVueLoader("/src/pages/popup/Popup.vue") },
   template: "<popup></popup>"
 }).$mount("#app");
