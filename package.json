@@ -1,0 +1,43 @@
+{
+  "name": "browser-extension2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@pika/web": "^0.6.1"
+  },
+  "dependencies": {
+    "@vue/composition-api": "^0.3.2",
+    "chrome-extension-async": "^3.4.0",
+    "d3": "^5.12.0",
+    "geolib": "^3.0.4",
+    "http-vue-loader": "^1.4.1",
+    "math.gl": "^3.0.0",
+    "topojson": "^3.0.2",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.1",
+    "vue-simple-maps": "^0.0.0-beta.1",
+    "vue-template-compiler": "^2.6.10",
+    "yaml": "^1.7.2",
+    "yamljs": "^0.3.0"
+  },
+  "@pika/web": {
+    "webDependencies": [
+      "geolib",
+      "topojson",
+      "d3",
+      "math.gl",
+      "vue-simple-maps",
+      "yamljs/dist/yaml.min.js",
+      "chrome-extension-async",
+      "vue/dist/vue.esm.browser.min.js",
+      "@vue/composition-api",
+      "http-vue-loader/src/httpVueLoader.js"
+    ]
+  }
+}

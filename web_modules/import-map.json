@@ -1,0 +1,13 @@
+{
+  "imports": {
+    "geolib": "./geolib.js",
+    "topojson": "./topojson.js",
+    "d3": "./d3.js",
+    "vue-simple-maps": "./vue-simple-maps.js",
+    "yamljs/dist/yaml.min": "./yamljs/dist/yaml.min.js",
+    "chrome-extension-async": "./chrome-extension-async.js",
+    "vue/dist/vue.esm.browser.min": "./vue/dist/vue.esm.browser.min.js",
+    "@vue/composition-api": "./@vue/composition-api.js",
+    "http-vue-loader/src/httpVueLoader": "./http-vue-loader/src/httpVueLoader.js"
+  }
+}
