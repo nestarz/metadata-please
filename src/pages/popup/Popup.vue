@@ -151,6 +151,12 @@
         <button type="submit" @click="mode = 'copy'">Copy</button>
       </div>
       <a class="save" ref="saveElt" :href="yamlBase64" :download="yamlNameFile" v-if="yamlBase64"></a>
+      <a
+        ref="toGit"
+        href="https://github.com/nestarz/soi/new/master/content"
+        target="_blank"
+        style="display: none;"
+      ></a>
       <textarea class="save" ref="copyElt" v-if="yaml" v-model="yaml"></textarea>
       <div v-else>Error</div>
     </form>
@@ -254,6 +260,7 @@ module.exports = {
     );
 
     const mode = ref(null);
+    const toGit = ref(null);
     const saveElt = ref(null);
     const copyElt = ref(null);
     const save = e => {
@@ -265,6 +272,7 @@ module.exports = {
           "Config has successfully been copied into your clip-board!\n\n" +
             yaml.value
         );
+        toGit.value.click();
       } else {
         saveElt.value.click();
       }
@@ -281,6 +289,7 @@ module.exports = {
     };
 
     return {
+      toGit,
       tags,
       categories,
       config,
@@ -313,6 +322,8 @@ module.exports = {
   overflow: hidden;
   padding: 0;
   width: 300px;
+  font-family: system-ui, sans-serif;
+  font-size: 75%;
 }
 .header {
   padding: 10px;
@@ -393,6 +404,8 @@ module.exports = {
   border: 0;
   resize: none;
   height: 40px;
+  font-family: system-ui, sans-serif;
+  font-size: 100%;
 }
 .detail-container {
   padding: 0 10px;

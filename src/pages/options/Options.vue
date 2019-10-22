@@ -13,6 +13,8 @@ module.exports = {};
 <style scoped>
 .container {
   padding: 0;
+  font-family: system-ui, sans-serif;
+  font-size: 75%;
 }
 .field {
   display: block;
