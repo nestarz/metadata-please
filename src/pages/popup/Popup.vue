@@ -52,7 +52,6 @@
           id="author"
           name="author"
           type="text"
-          required
           placeholder="Elias Rhouzlane"
           v-model="config.author"
         />
@@ -244,16 +243,22 @@ module.exports = {
       getMetadata();
     });
 
+    const removeempty = obj =>
+      Object.entries(obj).reduce(
+        (a, [k, v]) => (v || v === 0 ? { ...a, [k]: v } : a),
+        {}
+      );
     // Misc
     const yamlNameFile = computed(() => `${config.slug}.yml`);
     const yaml = computed(() => {
       localStorage[config.url] = JSON.stringify(config);
-      return YAML.stringify(
-        Object.entries(config).reduce(
-          (a, [k, v]) => (v || v === 0 ? { ...a, [k]: v } : a),
-          {}
-        )
-      );
+      const save = {
+        ...config
+      };
+      save.location = removeempty(save.location);
+      if (Object.keys(save.location).length === 0) save.location = null;
+      console.log(save.location);
+      return YAML.stringify(removeempty(save));
     });
     const yamlBase64 = computed(
       () => `data:text/x-yaml;charset=utf-8,${encodeURIComponent(yaml.value)}`
@@ -268,10 +273,7 @@ module.exports = {
         copyElt.value.focus();
         copyElt.value.select();
         document.execCommand("copy");
-        alert(
-          "Config has successfully been copied into your clip-board!\n\n" +
-            yaml.value
-        );
+        alert("Copy this into your clip-board!\n\n" + yaml.value);
         toGit.value.click();
       } else {
         saveElt.value.click();
@@ -323,7 +325,7 @@ module.exports = {
   padding: 0;
   width: 300px;
   font-family: system-ui, sans-serif;
-  font-size: 75%;
+  font-size: 11px;
 }
 .header {
   padding: 10px;
