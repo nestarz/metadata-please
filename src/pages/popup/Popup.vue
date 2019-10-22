@@ -152,7 +152,7 @@
       <a class="save" ref="saveElt" :href="yamlBase64" :download="yamlNameFile" v-if="yamlBase64"></a>
       <a
         ref="toGit"
-        href="https://github.com/nestarz/soi/new/master/content"
+        :href="`https://github.com/nestarz/soi/new/master/content/${config.category}`"
         target="_blank"
         style="display: none;"
       ></a>
