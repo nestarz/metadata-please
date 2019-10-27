@@ -48,17 +48,20 @@
     <label for="interest">Interest</label>
     <input type="range" id="interest" min="0" max="10" v-model="config.interest" required />
     <button type="submit" @click="mode = 'save'">Save</button>
-    <button type="submit" @click="mode = 'copy'">Copy</button>
+    <button type="submit" @click="mode = 'panel'">Copy</button>
+    <div class="copy">
+      <textarea ref="yamlArea" tabindex="0" v-model="yaml" readonly></textarea>
+      <span>
+        <a @click="mode = 'copy'" href="#">Copy to clipboard</a>
+        <a ref="git" :href="gitpage" target="_blank">Commit @ Git</a>
+      </span>
+    </div>
     <a
-      ref="git"
-      :href="`https://github.com/nestarz/soi/new/master/content/${config.category}`"
-      target="_blank"
-    />
-    <a
+      class="hidden"
       ref="download"
       :href="`data:text/x-yaml;charset=utf-8,${encodeURIComponent(yaml)}`"
       :download="`${config.slug}.yml`"
-    />
+    ></a>
   </form>
 </template>
 
@@ -144,6 +147,7 @@ module.exports = {
       });
     watch(() => (localStorage[config.url] = JSON.stringify(config)));
     const yaml = ref("");
+    const yamlArea = ref(null);
     return {
       title: "Metadata, Please",
       projects,
@@ -156,16 +160,22 @@ module.exports = {
       mode: ref(null),
       git: ref(null),
       download: ref(null),
-      submit: (mode, git, download) => {
+      yamlArea,
+      gitpage: computed(
+        () =>
+          `https://github.com/nestarz/soi/new/master/content/${config.category}`
+      ),
+      submit: async (mode, git, download) => {
         const save = { ...config };
         save.location = removeEmpty(save.location);
         if (Object.keys(save.location).length === 0) save.location = null;
         yaml.value = YAML.stringify(removeEmpty(save));
-        if (mode === "copy") {
-          alert(`Copy this into your clip-board!\n\n${yaml.value}`);
-          git.click();
+        if (mode === "panel") {
+          yamlArea.value.select();
         } else if (mode === "save") {
           download.click();
+        } else if (mode === "copy") {
+          document.execCommand("copy");
         }
       },
       clear: () => {
@@ -225,7 +235,25 @@ input {
   width: 100%;
 }
 
-a {
-  display: none;
+.hidden,
+.copy {
+  position: absolute;
+  left: -1000px;
+}
+
+.copy:focus-within {
+  display: grid;
+  position: absolute;
+  grid-template-rows: 0.9fr min-content min-content;
+  top: 1em;
+  bottom: 5em;
+  right: 1em;
+  left: 1em;
+  line-height: 2em;
+  background: white;
+}
+
+.copy textarea {
+  height: 100%;
 }
 </style>
