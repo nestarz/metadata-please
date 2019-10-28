@@ -1,8 +1,12 @@
 <template>
   <form class="popup" @submit.prevent="submit(mode, git, download)">
     <header>
-      {{ title }}
-      <button type="button" @click="clear">Clear cache</button>
+      <span>{{ title }}</span>
+      <nav tabindex="0">
+        <span>Menu</span>
+        <a href="#" @click="clear">Clear Cache</a>
+        <a href="#" @click="gooption">Options</a>
+      </nav>
     </header>
     <label>Project</label>
     <select v-model="config.project" required>
@@ -39,7 +43,7 @@
     <label>Description</label>
     <textarea required v-model="config.description" placeholder="It was a dark and stormy night..."></textarea>
     <label for="tags">
-      Tags
+      <span>Tags</span>
       <div v-for="tag in config.tags" :key="tag">{{ tag }}</div>
     </label>
     <select multiple id="tags" size="9" required v-model="config.tags">
@@ -82,10 +86,9 @@ const removeEmpty = obj =>
     {}
   );
 
-const browser = window.browser || window.chrome;
-
 module.exports = {
   setup() {
+    const commitUrl = ref("");
     const projects = ref([]);
     const categories = ref([]);
     const tags = ref([]);
@@ -93,10 +96,13 @@ module.exports = {
     const countries = ref([]);
     fetch("/assets/json/options.json")
       .then(response => response.json())
-      .then(json => {
-        projects.value = json.projects;
-        categories.value = json.categories;
-        tags.value = json.tags;
+      .then(async json => {
+        const { options } = await browser.storage.sync.get("options");
+        Object.entries({ commitUrl, projects, categories, tags }).forEach(
+          ([key, ref]) => {
+            ref.value = options[key].length ? options[key] : json[key];
+          }
+        );
       });
     fetch("/assets/json/cities10000.json")
       .then(response => response.json())
@@ -127,7 +133,7 @@ module.exports = {
     });
     browser.tabs
       .executeScript({
-        file: "/src/inject/page-metadata-parser.bundle.js"
+        file: "/assets/inject/page-metadata-parser.bundle.js"
       })
       .then(async () => {
         const [metadata] = await browser.tabs.executeScript({
@@ -150,21 +156,15 @@ module.exports = {
     const yamlArea = ref(null);
     return {
       title: "Metadata, Please",
-      projects,
-      categories,
-      tags,
-      cities,
-      countries,
+      ...{ projects, categories, tags },
+      ...{ cities, countries },
       config,
       yaml,
       mode: ref(null),
       git: ref(null),
       download: ref(null),
       yamlArea,
-      gitpage: computed(
-        () =>
-          `https://github.com/nestarz/soi/new/master/content/${config.category}`
-      ),
+      gitpage: computed(() => `${commitUrl.value}${config.category}`),
       submit: async (mode, git, download) => {
         const save = { ...config };
         save.location = removeEmpty(save.location);
@@ -181,7 +181,8 @@ module.exports = {
       clear: () => {
         localStorage.clear();
         window.location.reload(true);
-      }
+      },
+      gooption: () => browser.runtime.openOptionsPage()
     };
   }
 };
@@ -219,6 +220,21 @@ header {
   grid-column: span 2;
   display: flex;
   justify-content: space-between;
+}
+
+nav {
+  outline: none;
+}
+
+nav a,
+nav:focus-within span {
+  display: none;
+}
+
+nav:focus-within a,
+nav span {
+  display: inline;
+  cursor: pointer;
 }
 
 textarea {
