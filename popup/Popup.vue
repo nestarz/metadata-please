@@ -100,7 +100,7 @@ module.exports = {
         const { options } = await browser.storage.sync.get("options");
         Object.entries({ commitUrl, projects, categories, tags }).forEach(
           ([key, ref]) => {
-            ref.value = options[key].length ? options[key] : json[key];
+            ref.value = options && options[key].length ? options[key] : json[key];
           }
         );
       });
